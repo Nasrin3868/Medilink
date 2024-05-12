@@ -107,7 +107,8 @@ const userLogin=async(req,res)=>{
                 }else{
 
                     //create jsom web token
-                    res.status(201).json({message:"Your account is not blocked by Admin"})
+                    //creta  token here
+                    res.status(201).json({message:"Login successfully"})
                 }
             }
         }else{
