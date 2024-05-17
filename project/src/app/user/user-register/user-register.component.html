@@ -1,0 +1,138 @@
+<!-- <div class="top"> -->
+
+<div class="grid grid-cols-3">
+    <div class="col-span-1 "></div>
+    <div class="col-span-1 pad">
+        <div class="bg-white border-gray-200 rounded-lg shadow md:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <form class="max-w-sm mx-auto" [formGroup]="user_registration_form" (ngSubmit)="onsubmit()" #myform="ngForm">
+
+                <div class="mb-5 text-center text-xl text-blue-900">
+                    <h1>{{title}}</h1>
+                </div>
+                <div class="mb-5">
+                    <label for="name" class="block mb-2 text-sm font-medium text-red-600 dark:text-white">{{errorMessage}}</label>
+                </div>
+
+                <div class="mb-5">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">Your firstname</label>
+                    <input type="text" id="first_name" formControlName="firstname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="firstname" required />
+                    <div *ngIf="hasError('firstname', 'required') && myform?.submitted" class="text-red-600" >
+                          First name is required.
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">Your lastname</label>
+                    <input type="text" id="last_name" formControlName="lastname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="lastname" required />
+                    <div *ngIf="hasError('lastname', 'required') && myform?.submitted" class="text-red-600" >
+                        Last name is required.
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">Your email</label>
+                    <input type="email" id="email" formControlName="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="@gmail.com" required />
+                    <div *ngIf="hasError('email', 'required') && myform?.submitted" class="text-red-600" >
+                        Email is required.
+                    </div>
+                    <div *ngIf="emailerr" class="text-red-600" >
+                        Email should be abc@gmail.com format
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">Your password</label>
+                    <input type="password" id="password" formControlName="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                    <div *ngIf="hasError('password', 'required') && myform?.submitted" class="text-red-600" >
+                        Password is required.
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">confirm password</label>
+                    <input type="confirm_password" id="confirm_password" formControlName="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                    <div *ngIf="hasError('confirmPassword', 'required') && myform?.submitted" class="text-red-600" >
+                        Password is required.
+                    </div>
+                    <div *ngIf="passworderr" class="text-red-600" >
+                        Password do not match.
+                    </div>
+                </div>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                <button (click)="close()" class="text-white p-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Close</button>
+              </form>
+            </div> 
+    </div>
+    <div class="col-span-1"></div>
+</div>
+
+<!-- 
+<div class="card-container justify-center items-center ">
+    <div class="card-container max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <form class="max-w-md mx-auto" [formGroup]="user_registration_form" (ngSubmit)="onsubmit()" #myform="ngForm">
+        <div class="grid md:grid-cols-2 md:gap-6">
+          <div class="relative z-0 w-full mb-5 group">
+                <input 
+                    type="text" 
+                    name="floating_first_name" 
+                    formControlName="firstname" 
+                    id="floating_first_name" 
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                    placeholder=" " 
+                    required 
+                />
+              <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name</label>
+          </div>
+          <div class="relative z-0 w-full mb-5 group">
+                <input 
+                    type="text" 
+                    name="floating_last_name" 
+                    formControlName="lastname" 
+                    id="floating_last_name" 
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                    placeholder=" " 
+                    required 
+                />
+                <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
+          </div>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <input 
+                type="email" 
+                name="floating_email" 
+                formControlName="email" 
+                id="floating_email" 
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required 
+            />
+            <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+        </div>
+        
+        <div class="relative z-0 w-full mb-5 group">
+            <input 
+                type="password" 
+                name="floating_password" 
+                formControlName="password" 
+                id="floating_password" 
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required 
+            />
+            <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <input 
+                type="password" 
+                name="repeat_password" 
+                formControlName="confirmpassword" 
+                id="floating_repeat_password" 
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required />
+            <label for="floating_repeat_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password</label>
+        </div>
+        <button 
+            type="submit" 
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >Submit</button>
+      </form>
+    </div>
+</div> -->
+<!-- </div> -->

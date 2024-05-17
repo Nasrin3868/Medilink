@@ -1,0 +1,23 @@
+
+
+  /* .card-container {
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    /* align-items: center;
+    height: 0vh;
+  }
+    */
+
+    .card-container {
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      height: 90vh; /*Set height to full viewport height*/
+    }
+    
+    /* Adjustments to make image fit the left side of the card */
+    /* .card-container img {
+      max-width: 100%;
+      height: auto;
+    }
+     */
