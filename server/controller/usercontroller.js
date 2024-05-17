@@ -2,6 +2,7 @@ const userModel=require("../model/usermodel")
 const { hashedPass,comparePass }=require("../helper/hashPassword")
 const { generateMail }=require("../helper/generateOtp")
 const usercollection=require("../model/usermodel")
+const jwt=require('jsonwebtoken')
 
 
 
@@ -28,7 +29,7 @@ const registerUser=async(req,res)=>{
                 email:email,
                 password:hashed_password,
                 otp:otp,
-                otp_updated_time:new Date()
+                otp_update_time:new Date()
             })
             res.status(201).json({ message: "verify otp..." });
         }else{
@@ -73,16 +74,22 @@ const resendOtp=async(req,res)=>{
 
 const verifyOtp=async(req,res)=>{
     try{
+        console.log(req.body.email,req.body.otp)
         const {email,otp}=req.body
         const userdata=await usercollection.findOne({email:email})
+        console.log(userdata)
         if(userdata.otp!==Number(otp)){
             res.status(404).json({message: 'Incorrect OTP'})
         }else{
-            const otpExpirySecond=59
+            const otpExpiryMinute=59
+            otpExpirySecond = otpExpiryMinute * 60
             // checking the timer
             const timeDifference=Math.floor((new Date()-userdata.otp_update_time)/1000)
-
+            console.log('new date() in otp:',new Date())
+            console.log('userdata.otp_update_time in otp:',userdata.otp_update_time)
+            console.log('timeDifference in otp:',timeDifference)
             if(timeDifference>otpExpirySecond){
+                console.log('otp expired')
                 res.status(400).json({message:'Otp Expired'})
             }else{
                 userdata.is_verified=true
@@ -98,18 +105,37 @@ const verifyOtp=async(req,res)=>{
 const userLogin=async(req,res)=>{
     try{
         const {email,password}=req.body
+        console.log("email,password:",email,password)
         const userdata=await usercollection.findOne({email:email})
+        console.log('userdata:',userdata)
         if(userdata){
             const password_match=await comparePass(password,userdata.password)
+            console.log('password_match:',password_match)
             if(password_match){
                 if(userdata.blocked){
                     res.status(401).json({message:"Your account is blocked by Admin"})
                 }else{
-
-                    //create jsom web token
-                    //creta  token here
-                    res.status(201).json({message:"Login successfully"})
+                    console.log('unblocked user')
+                    const data={
+                        userId:userdata._id
+                    }
+                    const accessToken=jwt.sign(data,process.env.JWT_ACCESS_TOKEN)
+                    const accessedUser={
+                        firstName:userdata.firstName,
+                        lastName:userdata.lastName,
+                        email:userdata.email,
+                        role:userdata.role
+                    }
+                    console.log('accesstoken:',accessToken)
+                    console.log('accessedUser:',accessedUser)
+                    res.status(201).json({
+                        accessToken,
+                        accessedUser,
+                        message:"Login successfully"
+                    })
                 }
+            }else{
+                res.status(401).json({message:"Incorrect password"})
             }
         }else{
             res.status(401).json({message:"Invalid username"})
@@ -120,5 +146,41 @@ const userLogin=async(req,res)=>{
     }
 }
 
+//verify email for forget password
+const verifyEmail=async(req,res)=>{
+    try{
+        const {email}=req.body
+        const userdata=await usercollection.findOne({email:email})
+        if(userdata){
+            const otp=await generateMail(email)
+            userdata.otp=otp
+            userdata.otp_update_time=new Date()
+            await userdata.save()
+            res.status(201).json({message:'Email verification done'})
+        }else{
+            res.status(401).json({message:"Invalid Email"})
+        }
+    }catch(error){
+        res.status(500).json({message:"Internal server error"})
+    }
+}
 
-module.exports={registerUser,resendOtp,verifyOtp}
+const updatePassword=async(req,res)=>{
+    try{
+        const {email,password}=req.body
+        const hashed_password = await hashedPass(password);
+        const userdata=await usercollection.findOneAndUpdate(
+            {email:email},
+            {$set:
+                {
+                    password:hashed_password
+                }
+            }
+        )
+        res.status(201).json({message:"Password Updated"})
+    }catch(error){
+        res.status(500).json({message:"Internal server error"})
+    }
+}
+
+module.exports={registerUser,resendOtp,verifyOtp,userLogin,verifyEmail,updatePassword}

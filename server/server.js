@@ -11,6 +11,8 @@ const cors = require("cors");
 app.use(cors({ origin: ['http://localhost:4200'] }));
 
 const userrouter=require("../server/routes/userRoutes")
+const doctorrouter=require("../server/routes/doctorRoutes")
+
 
 app.use(loger("dev"))
 
@@ -21,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/user",userrouter)
+app.use("/doctor",doctorrouter)
 db.connectToDatabase()
 
 app.listen(port,()=>{

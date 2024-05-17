@@ -74,7 +74,15 @@ const doctorschema=new mongoose.Schema({
     created_time:{
         type: Date,
         default: Date.now()
-    }
+    },
+    otp:{
+        type: Number,
+        required:true
+    },
+    otp_update_time:{
+        type: Date,
+        default:Date.now()
+    },
     
 });
 
