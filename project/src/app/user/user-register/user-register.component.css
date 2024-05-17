@@ -1,0 +1,23 @@
+/* .card-container {
+    justify-content: center; 
+    align-items: center; /* Center vertically */
+    /* height: 90vh; /*Set height to full viewport height*/
+    /* padding: 30px;
+  }   */
+
+  .card-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 90vh; /* Set height to full viewport height */
+    padding: 1cap;
+}
+
+.card-container .card-container {
+    max-width: 600px; /* Set the maximum width of the card */
+    width: 100%; /* Ensure the card fills the container horizontally */
+}
+
+.pad{
+  padding-top: 10px;
+}
